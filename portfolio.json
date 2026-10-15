@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "name": "nexus-hub-alan-vo",
+  "owner": "ALANDVO",
+  "email": "alanvo@gmail.com",
+  "domain": "AI/ML developer tools",
+  "summary": "Work in progress: nexus-hub-alan-vo",
+  "workflows": [
+    "Swarm lifecycle management with configurable topologies and dynamic agent scaling",
+    "Task orchestration with priority queue, agent assignment, and real-time execution tracking",
+    "Vector memory storage and semantic retrieval for context-aware agent operations"
+  ],
+  "auth": "oidc-keycloak-saml-broker",
+  "llm_providers": [
+    "openai-compatible",
+    "anthropic",
+    "gemini",
+    "ollama"
+  ],
+  "status": "work-in-progress"
+}
