@@ -1,7 +1,7 @@
 import enum
 import uuid
 from datetime import datetime, timezone
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 from sqlalchemy import (
     Column, String, Text, DateTime, Enum, ForeignKey, Integer, Float, Index, JSON, Boolean
 )
@@ -150,7 +150,7 @@ class Memory(Base):
     task_id = Column(PG_UUID(as_uuid=False), ForeignKey("tasks.id"), nullable=True, index=True)
     content = Column(Text, nullable=False)
     embedding = Column(JSON, nullable=True)  # Stored as list[float]
-    metadata = Column(JSON, nullable=True)
+    memory_metadata = Column("metadata", JSON, nullable=True)
     memory_type = Column(String(64), nullable=False, default="general")  # general, task_output, research, etc.
     importance = Column(Float, nullable=False, default=1.0)
     created_at = Column(DateTime(timezone=True), nullable=False, default=utcnow, index=True)

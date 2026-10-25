@@ -41,7 +41,7 @@ def create_task(
     return task
 
 
-@router.get("", response_model=PaginatedResponse)
+@router.get("", response_model=PaginatedResponse[TaskResponse])
 def list_tasks(
     swarm_id: str,
     skip: int = Query(0, ge=0),
@@ -72,15 +72,15 @@ def get_task(swarm_id: str, task_id: str, task_service: TaskService = Depends(ge
 def claim_task(
     swarm_id: str,
     task_id: str,
-    agent_id: str,
+    payload: TaskAction,
     task_service: TaskService = Depends(get_task_service),
     agent_service: AgentService = Depends(get_agent_service),
 ):
-    agent = agent_service.get_agent(agent_id)
+    agent = agent_service.get_agent(payload.agent_id)
     if not agent or agent.swarm_id != swarm_id:
         raise HTTPException(status_code=404, detail="Agent not found")
 
-    task = task_service.claim_task(task_id, agent_id)
+    task = task_service.claim_task(task_id, payload.agent_id)
     if not task:
         raise HTTPException(status_code=400, detail="Cannot claim task: not pending or agent unavailable")
     return task

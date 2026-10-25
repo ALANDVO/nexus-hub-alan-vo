@@ -35,7 +35,7 @@ def store_memory(
     return memory
 
 
-@router.get("", response_model=PaginatedResponse)
+@router.get("", response_model=PaginatedResponse[MemoryResponse])
 def list_memories(
     swarm_id: str,
     skip: int = Query(0, ge=0),
