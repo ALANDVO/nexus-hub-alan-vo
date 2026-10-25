@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 — work-in-progress checkpoint
+
+Partial code published for continued development. Known issues: STATUS.md.
+
 ## 1.0.0 — work-in-progress checkpoint
 
 Partial code published for continued development. Known issues: STATUS.md.
@@ -43,12 +47,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- SQLAlchemy reserved column name `metadata` in Memory model (renamed to `memory_metadata` with API alias `metadata`)
+- Pydantic serialization of paginated responses by making `PaginatedResponse` generic
+- Task claim endpoint now accepts JSON body with `agent_id` field
+
 ### Planned
 - HNSW index for production-scale vector search
-- WebSocket/SSE for real-time task updates
-- LLM adapter abstraction (OpenAI-compatible, Anthropic, Gemini, Ollama)
-- RAG endpoint with grounded responses
-- Keycloak realm import file
-- Comprehensive test suite (12+ backend, 3+ frontend)
-- Performance benchmarks
-- Backup/restore tooling

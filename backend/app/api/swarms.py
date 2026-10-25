@@ -22,7 +22,7 @@ def create_swarm(payload: SwarmCreate, service: SwarmService = Depends(get_swarm
     return swarm
 
 
-@router.get("", response_model=PaginatedResponse)
+@router.get("", response_model=PaginatedResponse[SwarmResponse])
 def list_swarms(
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=200),

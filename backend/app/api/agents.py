@@ -37,7 +37,7 @@ def spawn_agent(
     return agent
 
 
-@router.get("", response_model=PaginatedResponse)
+@router.get("", response_model=PaginatedResponse[AgentResponse])
 def list_agents(
     swarm_id: str,
     skip: int = Query(0, ge=0),

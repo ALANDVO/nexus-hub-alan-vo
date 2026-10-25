@@ -52,7 +52,7 @@ export function Layout() {
       </main>
       <footer className="border-t py-4">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          Nexus Hub &copy; 2026 Alan Vo <alanvo@gmail.com> — MIT License
+          Nexus Hub &copy; 2026 Alan Vo &lt;alanvo@gmail.com&gt; — MIT License
         </div>
       </footer>
     </div>

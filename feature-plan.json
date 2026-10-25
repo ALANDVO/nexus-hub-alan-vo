@@ -1,1 +1,105 @@
-{"schema_version":1,"current_feature":"core-skeleton","features":[{"id":"core-skeleton","title":"Core FastAPI/React skeleton with health check","status":"in_progress","acceptance":["FastAPI app starts and responds to /healthz","React + Vite frontend builds and serves","Docker compose brings up backend, frontend, Keycloak, PostgreSQL","Basic project structure with all required config files"],"implementation":[],"tests":[]},{"id":"swarm-domain","title":"Swarm coordination domain engine","status":"planned","acceptance":["Create/list/get swarms with topology and agent limits","Spawn/terminate agents within a swarm","Persist swarm and agent state to SQLite","REST API with validation, pagination, filtering"],"implementation":[],"tests":[]},{"id":"task-orchestration","title":"Task orchestration workflow","status":"planned","acceptance":["Submit tasks to a swarm with payload and priority","Agents claim and execute tasks with status tracking","Task results stored and retrievable","WebSocket or SSE for real-time task updates"],"implementation":[],"tests":[]},{"id":"memory-rag","title":"Vector memory with RAG retrieval","status":"planned","acceptance":["Store embeddings for agent memories and task outputs","Semantic search across swarm memory","RAG endpoint for context-aware responses","HNSW index for efficient similarity search"],"implementation":[],"tests":[]},{"id":"oidc-auth","title":"OIDC authentication with Keycloak","status":"planned","acceptance":["Backend validates Keycloak JWT tokens","Frontend login/logout flow with PKCE","Role-based access (viewer, operator, admin)","Protected API endpoints with authorization"],"implementation":[],"tests":[]},{"id":"frontend-workflows","title":"Frontend dashboard with three workflows","status":"planned","acceptance":["Swarm dashboard: create, monitor, delete swarms","Agent management: spawn, view, terminate agents","Task console: submit tasks, watch execution, view results","Loading, error, empty states for all views"],"implementation":[],"tests":[]},{"id":"packaging-docs","title":"Docker, CI, documentation, portfolio.json","status":"planned","acceptance":["Backend and frontend Dockerfiles with non-root users","compose.yaml with Keycloak, PostgreSQL, volumes","GitHub Actions CI: pytest, npm build/test, Docker build","README with install/run/test, architecture diagram, API ref","portfolio.json at root with schema_version=1"],"implementation":[],"tests":[]}]}
+{
+  "schema_version": 1,
+  "current_feature": "core-skeleton",
+  "features": [
+    {
+      "id": "core-skeleton",
+      "title": "Core FastAPI/React skeleton with health check",
+      "status": "done",
+      "acceptance": [
+        "FastAPI app starts and responds to /healthz",
+        "React + Vite frontend builds and serves",
+        "Docker compose brings up backend, frontend, Keycloak, PostgreSQL",
+        "Basic project structure with all required config files"
+      ],
+      "implementation": [
+        "backend/app/main.py",
+        "backend/app/api/health.py",
+        "backend/app/core/config.py",
+        "backend/app/core/database.py"
+      ],
+      "tests": [
+        "backend/tests/test_api.py"
+      ]
+    },
+    {
+      "id": "swarm-domain",
+      "title": "Swarm coordination domain engine",
+      "status": "planned",
+      "acceptance": [
+        "Create/list/get swarms with topology and agent limits",
+        "Spawn/terminate agents within a swarm",
+        "Persist swarm and agent state to SQLite",
+        "REST API with validation, pagination, filtering"
+      ],
+      "implementation": [],
+      "tests": []
+    },
+    {
+      "id": "task-orchestration",
+      "title": "Task orchestration workflow",
+      "status": "planned",
+      "acceptance": [
+        "Submit tasks to a swarm with payload and priority",
+        "Agents claim and execute tasks with status tracking",
+        "Task results stored and retrievable",
+        "WebSocket or SSE for real-time task updates"
+      ],
+      "implementation": [],
+      "tests": []
+    },
+    {
+      "id": "memory-rag",
+      "title": "Vector memory with RAG retrieval",
+      "status": "planned",
+      "acceptance": [
+        "Store embeddings for agent memories and task outputs",
+        "Semantic search across swarm memory",
+        "RAG endpoint for context-aware responses",
+        "HNSW index for efficient similarity search"
+      ],
+      "implementation": [],
+      "tests": []
+    },
+    {
+      "id": "oidc-auth",
+      "title": "OIDC authentication with Keycloak",
+      "status": "planned",
+      "acceptance": [
+        "Backend validates Keycloak JWT tokens",
+        "Frontend login/logout flow with PKCE",
+        "Role-based access (viewer, operator, admin)",
+        "Protected API endpoints with authorization"
+      ],
+      "implementation": [],
+      "tests": []
+    },
+    {
+      "id": "frontend-workflows",
+      "title": "Frontend dashboard with three workflows",
+      "status": "planned",
+      "acceptance": [
+        "Swarm dashboard: create, monitor, delete swarms",
+        "Agent management: spawn, view, terminate agents",
+        "Task console: submit tasks, watch execution, view results",
+        "Loading, error, empty states for all views"
+      ],
+      "implementation": [],
+      "tests": []
+    },
+    {
+      "id": "packaging-docs",
+      "title": "Docker, CI, documentation, portfolio.json",
+      "status": "planned",
+      "acceptance": [
+        "Backend and frontend Dockerfiles with non-root users",
+        "compose.yaml with Keycloak, PostgreSQL, volumes",
+        "GitHub Actions CI: pytest, npm build/test, Docker build",
+        "README with install/run/test, architecture diagram, API ref",
+        "portfolio.json at root with schema_version=1"
+      ],
+      "implementation": [],
+      "tests": []
+    }
+  ]
+}

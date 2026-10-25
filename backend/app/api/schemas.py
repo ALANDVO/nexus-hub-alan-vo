@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, ConfigDict
-from typing import Optional, List, Dict, Any
+from typing import Optional, List, Dict, Any, Generic, TypeVar
 from datetime import datetime
 from enum import Enum
 
@@ -152,13 +152,13 @@ class TaskResponse(TaskBase):
 
 
 class TaskAction(BaseModel):
-    pass
+    agent_id: str
 
 
 class MemoryBase(BaseModel):
     content: str = Field(..., min_length=1)
     embedding: Optional[List[float]] = None
-    metadata: Optional[Dict[str, Any]] = None
+    metadata: Optional[Dict[str, Any]] = Field(default=None, alias="memory_metadata")
     memory_type: str = Field(default="general", max_length=64)
     importance: float = Field(default=1.0, ge=0.0, le=10.0)
 
@@ -183,9 +183,11 @@ class MemorySearchRequest(BaseModel):
     limit: int = Field(default=10, ge=1, le=100)
     min_similarity: float = Field(default=0.7, ge=0.0, le=1.0)
 
+T = TypeVar("T")
 
-class PaginatedResponse(BaseModel):
-    items: List[Any]
+
+class PaginatedResponse(BaseModel, Generic[T]):
+    items: List[T]
     total: int
     skip: int
     limit: int

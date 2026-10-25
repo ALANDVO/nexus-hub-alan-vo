@@ -10,13 +10,17 @@ core-skeleton
 
 ### core-skeleton — Core FastAPI/React skeleton with health check
 
-Status: in_progress
+Status: done
 
 Acceptance:
 - FastAPI app starts and responds to /healthz
 - React + Vite frontend builds and serves
 - Docker compose brings up backend, frontend, Keycloak, PostgreSQL
 - Basic project structure with all required config files
+
+Implementation: `backend/app/main.py`, `backend/app/api/health.py`, `backend/app/core/config.py`, `backend/app/core/database.py`
+
+Tests: `backend/tests/test_api.py`
 
 ### swarm-domain — Swarm coordination domain engine
 

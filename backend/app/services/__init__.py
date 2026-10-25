@@ -300,7 +300,7 @@ class TaskService:
         if not task or task.status != TaskStatus.PENDING:
             return None
         agent = self.db.query(Agent).filter(Agent.id == agent_id, Agent.swarm_id == task.swarm_id).first()
-        if not agent or agent.status not in [AgentStatus.ACTIVE, AgentStatus.IDLE]:
+        if not agent or agent.status not in [AgentStatus.ACTIVE, AgentStatus.IDLE, AgentStatus.SPAWNING]:
             return None
         task.status = TaskStatus.CLAIMED
         task.agent_id = agent_id
@@ -389,7 +389,7 @@ class MemoryService:
             task_id=task_id,
             content=content,
             embedding=embedding,
-            metadata=metadata or {},
+            memory_metadata=metadata or {},
             memory_type=memory_type,
             importance=importance,
         )
