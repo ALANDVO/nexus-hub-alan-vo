@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "current_feature": "core-skeleton",
+  "current_feature": "swarm-domain",
   "features": [
     {
       "id": "core-skeleton",
@@ -25,15 +25,29 @@
     {
       "id": "swarm-domain",
       "title": "Swarm coordination domain engine",
-      "status": "planned",
+      "status": "done",
       "acceptance": [
         "Create/list/get swarms with topology and agent limits",
         "Spawn/terminate agents within a swarm",
         "Persist swarm and agent state to SQLite",
         "REST API with validation, pagination, filtering"
       ],
-      "implementation": [],
-      "tests": []
+      "implementation": [
+        "backend/app/api/swarms.py",
+        "backend/app/api/agents.py",
+        "backend/app/services/__init__.py",
+        "backend/app/models/__init__.py",
+        "backend/app/api/schemas.py",
+        "frontend/src/pages/SwarmsPage.tsx",
+        "frontend/src/pages/SwarmDetailPage.tsx",
+        "frontend/src/hooks/useApi.ts",
+        "frontend/src/api/client.ts"
+      ],
+      "tests": [
+        "backend/tests/test_api.py",
+        "frontend/src/pages/SwarmsPage.test.tsx",
+        "frontend/src/pages/SwarmDetailPage.test.tsx"
+      ]
     },
     {
       "id": "task-orchestration",
