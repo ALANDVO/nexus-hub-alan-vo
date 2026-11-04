@@ -4,7 +4,7 @@ Each round completes one feature or repair. Future items are planned, not implem
 
 ## Current round
 
-core-skeleton
+swarm-domain
 
 ## Roadmap
 
@@ -24,13 +24,17 @@ Tests: `backend/tests/test_api.py`
 
 ### swarm-domain — Swarm coordination domain engine
 
-Status: planned
+Status: done
 
 Acceptance:
 - Create/list/get swarms with topology and agent limits
 - Spawn/terminate agents within a swarm
 - Persist swarm and agent state to SQLite
 - REST API with validation, pagination, filtering
+
+Implementation: `backend/app/api/swarms.py`, `backend/app/api/agents.py`, `backend/app/services/__init__.py`, `backend/app/models/__init__.py`, `backend/app/api/schemas.py`, `frontend/src/pages/SwarmsPage.tsx`, `frontend/src/pages/SwarmDetailPage.tsx`, `frontend/src/hooks/useApi.ts`, `frontend/src/api/client.ts`
+
+Tests: `backend/tests/test_api.py`, `frontend/src/pages/SwarmsPage.test.tsx`, `frontend/src/pages/SwarmDetailPage.test.tsx`
 
 ### task-orchestration — Task orchestration workflow
 

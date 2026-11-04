@@ -72,3 +72,12 @@ logs/
 # Test artifacts
 coverage/
 .nyc_output/
+.turbo/
+**/data/media/
+*.pyc
+*.db-wal
+*.db-shm
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-wal
+*.sqlite3-shm

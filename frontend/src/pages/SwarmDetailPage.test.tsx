@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import { SwarmDetailPage } from '@/pages/SwarmDetailPage'
 import { api } from '@/api/client'
 
@@ -25,17 +25,17 @@ vi.mock('@/api/client', () => ({
   },
 }))
 
-const createWrapper = () => {
+function TestWrapper({ swarmId = 'swarm-1' }: { swarmId?: string }) {
   const queryClient = new QueryClient({
     defaultOptions: { queries: { retry: false } },
   })
-  return ({ children }: { children: React.ReactNode }) => (
+  return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <MemoryRouter initialEntries={[`/swarms/${swarmId}`]}>
         <Routes>
           <Route path="/swarms/:swarmId" element={<SwarmDetailPage />} />
         </Routes>
-      </BrowserRouter>
+      </MemoryRouter>
     </QueryClientProvider>
   )
 }
@@ -73,7 +73,7 @@ describe('SwarmDetailPage', () => {
     api.listTasks.mockResolvedValue({ items: [], total: 0, skip: 0, limit: 100 })
     api.listMemories.mockResolvedValue({ items: [], total: 0, skip: 0, limit: 50 })
 
-    render(<SwarmDetailPage />, { wrapper: createWrapper() })
+    render(<TestWrapper />)
 
     await waitFor(() => {
       expect(screen.getByText('Test Swarm')).toBeInTheDocument()
@@ -88,7 +88,7 @@ describe('SwarmDetailPage', () => {
     api.listTasks.mockResolvedValue({ items: [], total: 0, skip: 0, limit: 100 })
     api.listMemories.mockResolvedValue({ items: [], total: 0, skip: 0, limit: 50 })
 
-    render(<SwarmDetailPage />, { wrapper: createWrapper() })
+    render(<TestWrapper swarmId="s1" />)
 
     await waitFor(() => {
       expect(screen.getByText('3')).toBeInTheDocument()
