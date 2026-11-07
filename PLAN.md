@@ -91,3 +91,6 @@ Acceptance:
 - README with install/run/test, architecture diagram, API ref
 - portfolio.json at root with schema_version=1
 
+---
+
+Alan Vo · [alanvo.net](https://alanvo.net)
