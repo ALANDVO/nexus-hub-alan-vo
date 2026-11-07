@@ -52,15 +52,28 @@
     {
       "id": "task-orchestration",
       "title": "Task orchestration workflow",
-      "status": "planned",
+      "status": "in_progress",
       "acceptance": [
         "Submit tasks to a swarm with payload and priority",
         "Agents claim and execute tasks with status tracking",
         "Task results stored and retrievable",
-        "WebSocket or SSE for real-time task updates"
+        "WebSocket for real-time task updates"
       ],
-      "implementation": [],
-      "tests": []
+      "implementation": [
+        "backend/app/api/tasks.py",
+        "backend/app/api/swarms.py",
+        "backend/app/api/agents.py",
+        "backend/app/services/__init__.py",
+        "backend/app/models/__init__.py",
+        "backend/app/api/schemas.py",
+        "frontend/src/pages/SwarmDetailPage.tsx",
+        "frontend/src/hooks/useApi.ts",
+        "frontend/src/api/client.ts"
+      ],
+      "tests": [
+        "backend/tests/test_api.py",
+        "frontend/src/pages/SwarmDetailPage.test.tsx"
+      ]
     },
     {
       "id": "memory-rag",
