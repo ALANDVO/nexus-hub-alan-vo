@@ -38,13 +38,17 @@ Tests: `backend/tests/test_api.py`, `frontend/src/pages/SwarmsPage.test.tsx`, `f
 
 ### task-orchestration — Task orchestration workflow
 
-Status: planned
+Status: in_progress
 
 Acceptance:
 - Submit tasks to a swarm with payload and priority
 - Agents claim and execute tasks with status tracking
 - Task results stored and retrievable
-- WebSocket or SSE for real-time task updates
+- WebSocket for real-time task updates
+
+Implementation: `backend/app/api/tasks.py`, `backend/app/api/swarms.py`, `backend/app/api/agents.py`, `backend/app/services/__init__.py`, `backend/app/models/__init__.py`, `backend/app/api/schemas.py`, `frontend/src/pages/SwarmDetailPage.tsx`, `frontend/src/hooks/useApi.ts`, `frontend/src/api/client.ts`
+
+Tests: `backend/tests/test_api.py`, `frontend/src/pages/SwarmDetailPage.test.tsx`
 
 ### memory-rag — Vector memory with RAG retrieval
 

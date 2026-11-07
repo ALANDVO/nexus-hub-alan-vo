@@ -1,6 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status, WebSocket, WebSocketDisconnect
 from sqlalchemy.orm import Session
-from typing import List, Optional
+from typing import List, Optional, Dict, Set, Any
+from datetime import datetime, timezone
+import json
+import asyncio
 
 from app.core.database import get_db_session
 from app.services import TaskService, SwarmService, AgentService
@@ -24,6 +27,59 @@ def get_agent_service(db: Session = Depends(get_db_session)) -> AgentService:
     return AgentService(db)
 
 
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: Dict[str, Set[WebSocket]] = {}
+
+    async def connect(self, swarm_id: str, websocket: WebSocket):
+        await websocket.accept()
+        if swarm_id not in self.active_connections:
+            self.active_connections[swarm_id] = set()
+        self.active_connections[swarm_id].add(websocket)
+
+    def disconnect(self, swarm_id: str, websocket: WebSocket):
+        if swarm_id in self.active_connections:
+            self.active_connections[swarm_id].discard(websocket)
+            if not self.active_connections[swarm_id]:
+                del self.active_connections[swarm_id]
+
+    async def broadcast(self, swarm_id: str, message: dict):
+        if swarm_id in self.active_connections:
+            dead = set()
+            for ws in self.active_connections[swarm_id]:
+                try:
+                    await ws.send_json(message)
+                except Exception:
+                    dead.add(ws)
+            for ws in dead:
+                self.disconnect(swarm_id, ws)
+
+
+manager = ConnectionManager()
+
+
+@router.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket, swarm_id: str):
+    await manager.connect(swarm_id, websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            # Echo back for keepalive/ping-pong
+            await websocket.send_json({"type": "ping", "data": data})
+    except WebSocketDisconnect:
+        manager.disconnect(swarm_id, websocket)
+
+
+async def broadcast_task_update(swarm_id: str, task_id: str, event: str, data: dict):
+    await manager.broadcast(swarm_id, {
+        "type": "task_update",
+        "task_id": task_id,
+        "event": event,
+        "data": data,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+    })
+
+
 @router.post("", response_model=TaskResponse, status_code=status.HTTP_201_CREATED)
 def create_task(
     swarm_id: str,
@@ -34,10 +90,9 @@ def create_task(
     swarm = swarm_service.get_swarm(swarm_id)
     if not swarm:
         raise HTTPException(status_code=404, detail="Swarm not found")
-
     task = task_service.create_task(swarm_id=swarm_id, **payload.model_dump())
     if not task:
-        raise HTTPException(status_code=400, detail="Failed to create task")
+        raise HTTPException(status_code=400, detail="Cannot create task: swarm not found")
     return task
 
 
@@ -75,14 +130,19 @@ def claim_task(
     payload: TaskAction,
     task_service: TaskService = Depends(get_task_service),
     agent_service: AgentService = Depends(get_agent_service),
+    swarm_service: SwarmService = Depends(get_swarm_service),
 ):
+    swarm = swarm_service.get_swarm(swarm_id)
+    if not swarm:
+        raise HTTPException(status_code=404, detail="Swarm not found")
+
     agent = agent_service.get_agent(payload.agent_id)
     if not agent or agent.swarm_id != swarm_id:
-        raise HTTPException(status_code=404, detail="Agent not found")
+        raise HTTPException(status_code=404, detail="Agent not found in this swarm")
 
     task = task_service.claim_task(task_id, payload.agent_id)
     if not task:
-        raise HTTPException(status_code=400, detail="Cannot claim task: not pending or agent unavailable")
+        raise HTTPException(status_code=400, detail="Cannot claim task: not pending or agent not available")
     return task
 
 
@@ -101,7 +161,7 @@ def start_task(swarm_id: str, task_id: str, task_service: TaskService = Depends(
 def complete_task(
     swarm_id: str,
     task_id: str,
-    result: dict,
+    result: Dict[str, Any],
     task_service: TaskService = Depends(get_task_service),
 ):
     task = task_service.get_task(task_id)
