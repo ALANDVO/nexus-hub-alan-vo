@@ -450,7 +450,7 @@ class MemoryService:
 
         scored = []
         for m in memories:
-            if m.embedding:
+            if m.embedding and len(m.embedding) == len(query_embedding):
                 sim = cosine_sim(query_embedding, m.embedding)
                 if sim >= min_similarity:
                     scored.append((sim, m))

@@ -274,3 +274,22 @@ class TestMemoryEndpoints:
         data = response.json()
         assert len(data) == 1
         assert "cat" in data[0]["content"]
+
+class TestSemanticSearchDimensions:
+    def test_mismatched_embedding_dimensions_excluded(self):
+        swarm_resp = client.post("/api/v1/swarms", json={"name": "dim-swarm"})
+        swarm_id = swarm_resp.json()["id"]
+        # Stored embedding is 3-dimensional.
+        client.post(
+            f"/api/v1/swarms/{swarm_id}/memories",
+            json={"content": "three-dim memory", "embedding": [0.1, 0.2, 0.3]},
+        )
+        # Query embedding is 2-dimensional; dimensions do not match.
+        response = client.post(
+            f"/api/v1/swarms/{swarm_id}/memories/search",
+            json={"query_embedding": [0.15, 0.25], "limit": 10, "min_similarity": 0.5},
+        )
+        assert response.status_code == 200
+        data = response.json()
+        # A dimension-mismatched embedding must not be scored/returned.
+        assert data == []
